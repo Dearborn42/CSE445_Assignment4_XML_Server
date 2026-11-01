@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="https://dearborn42.github.io/CSE445_Assignment4_XML_Server"
+           targetNamespace="https://dearborn42.github.io/CSE445_Assignment4_XML_Server"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
 
-    <!-- Root array-->
-    <xs:element name="NationalParks">
-        <xs:complexType>
-            <xs:sequence>
-                <!-- Natinal park element -->
-                <xs:element name="NationalPark" maxOccurs="unbounded">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <!-- Order of stuff in order -->
-                            <xs:element name="Name" type="xs:string"/>
-                            <xs:element name="Phone" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-                            <xs:element name="Address">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="Number" type="xs:string"/>
-                                        <xs:element name="Street" type="xs:string"/>
-                                        <xs:element name="City" type="xs:string"/>
-                                        <xs:element name="State" type="xs:string"/>
-                                        <xs:element name="Zip" type="xs:string"/>
-                                    </xs:sequence>
-                                    <!-- Required attribute on Address -->
-                                    <xs:attribute name="NearestAirport" type="xs:string" use="required"/>
-                                </xs:complexType>
-                            </xs:element>
-                        </xs:sequence>
-                        <!-- Optional final element -->
-                        <xs:attribute name="Rating" type="xs:decimal" use="optional"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
+    <xs:annotation>
+        <xs:documentation xml:lang="en">National Parks directory for CSE445 Assignment 4</xs:documentation>
+    </xs:annotation>
+
+    <!-- Root element -->
+    <xs:element name="NationalParks" type="NationalParksType"/>
+
+    <!-- Root holds one or more NationalPark elements -->
+    <xs:complexType name="NationalParksType">
+        <xs:sequence>
+            <xs:element name="NationalPark" type="NationalParkType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Name, Phone(s), Address in left-to-right order; Rating is an optional attribute -->
+    <xs:complexType name="NationalParkType">
+        <xs:sequence>
+            <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Phone" type="PhoneType" minOccurs="1" maxOccurs="unbounded"/>
+            <xs:element name="Address" type="AddressType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="Rating" type="xs:decimal" use="optional"/>
+    </xs:complexType>
+
+    <!-- Number, Street, City, State, Zip; NearestAirport is a required attribute -->
+    <xs:complexType name="AddressType">
+        <xs:sequence>
+            <xs:element name="Number" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Street" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="City" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="State" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Zip" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="NearestAirport" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <!-- Phone format: 123-456-7890 -->
+    <xs:simpleType name="PhoneType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{3}-\d{3}-\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
 
 </xs:schema>
