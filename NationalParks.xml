@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <NationalParks xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                xsi:noNamespaceSchemaLocation="https://dearborn42.github.io/CSE445_Assignment4_XML_Server/NationalParks.xsd">
     <!-- 0. Grand Canyon -->
